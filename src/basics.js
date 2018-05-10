@@ -88,6 +88,13 @@ scene.add(cube2);
 let frameCounter = 0;
 
 let incr = 1;
+
+let matrix = new THREE.Matrix4().lookAt(dest, cube.position, cube.up);
+let angles = new THREE.Euler().setFromRotationMatrix(matrix);
+angles.z = 0;
+
+let currentAngles = new THREE.Euler();
+
 let render = function () {
 	setTimeout(() => {
 		requestAnimationFrame(render);
@@ -97,17 +104,20 @@ let render = function () {
 		frameCounter = 0;
 	}
 
-	cube.position.x += incr;
-	if (cube.position.x > 5)
-		incr = -1;
-	if (cube.position.x <= 0)
-		incr = 1;
+	// cube.position.x += incr;
+	// if (cube.position.x > 5)
+	// 	incr = -1;
+	// if (cube.position.x <= 0)
+	// 	incr = 1;
 
-	let matrix = new THREE.Matrix4().lookAt(dest, cube.position, cube.up);
-	let angles = new THREE.Euler().setFromRotationMatrix(matrix);
-	angles.z = 0;
+	if (currentAngles.x != angles.x) {
+		currentAngles.x += angles.x / 10;
+	}
+	if (currentAngles.y != angles.y) {
+		currentAngles.y += angles.y / 10;
+	}
 
-	cube.quaternion.setFromEuler(angles);
+	cube.quaternion.setFromEuler(currentAngles);
 
 	frameCounter += 1;
 	
