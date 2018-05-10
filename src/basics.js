@@ -9,6 +9,9 @@ let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 4;
 
+// Start controls
+new THREE.OrbitControls( camera );
+
 // Create a renderer with Antialiasing
 let renderer = new THREE.WebGLRenderer({
 	antialias: true
@@ -34,10 +37,19 @@ let material = new THREE.MeshBasicMaterial({
 });
 let cube = new THREE.Mesh(geometry, material);
 
+// Add coordinate system
+scene.add(new THREE.AxesHelper(5));
+
 // Add cube to Scene
 scene.add(cube);
 
 // Render Loop
+let frameCounter = 10;
+
+let dest = new THREE.Vector3(1, 1, 1);
+let rotMatrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), new THREE.Vector3(0, 1, 0));
+let angles = new THREE.Euler().setFromRotationMatrix(rotMatrix);
+
 let render = function () {
 	requestAnimationFrame(render);
 
@@ -45,11 +57,10 @@ let render = function () {
 	// cube.rotation.y += 0.01;
 	// cube.rotation.z += 0.01;
 
-	let dest = new THREE.Vector3(1, 1, 1);
-	let rotMatrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(0, 1, 0));
-
-
-	cube.rotateX(0.01);
+	if (frameCounter < 10) {
+		cube.rotateX(angles.x / 10);
+		frameCounter += 1;
+	}
 
 	// Render the scene
 	renderer.render(scene, camera);
