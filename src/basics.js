@@ -30,7 +30,7 @@ document.body.appendChild(renderer.domElement);
 // Create a Cube Mesh with basic material
 var geometry = new THREE.BoxGeometry(1, 1, 1);
 var material = new THREE.MeshBasicMaterial({
-	color: "#433F81"
+	color: 'green'
 });
 var cube = new THREE.Mesh(geometry, material);
 
