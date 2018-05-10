@@ -104,8 +104,10 @@ let render = function () {
 		incr = 1;
 
 	let matrix = new THREE.Matrix4().lookAt(dest, cube.position, cube.up);
+	let angles = new THREE.Euler().setFromRotationMatrix(matrix);
+	angles.z = 0;
 
-	cube.quaternion.setFromRotationMatrix(matrix);
+	cube.quaternion.setFromEuler(angles);
 
 	frameCounter += 1;
 	
