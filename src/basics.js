@@ -103,10 +103,7 @@ let render = function () {
 	if (cube.position.x <= 0)
 		incr = 1;
 
-	// cube.worldToLocal(dest);
-
 	let matrix = new THREE.Matrix4().lookAt(dest, cube.position, cube.up);
-	let angles = new THREE.Euler().setFromRotationMatrix(matrix);
 
 	cube.quaternion.setFromRotationMatrix(matrix);
 
