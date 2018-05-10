@@ -89,7 +89,12 @@ let frameCounter = 0;
 
 let incr = 1;
 
-cube.position.x = 1;
+parent.position.x = 1;
+parent.rotateZ(Math.PI / 4);
+
+parent.updateMatrixWorld(true);
+
+dest.applyMatrix4(new THREE.Matrix4().getInverse(parent.matrixWorld));
 
 let matrix = new THREE.Matrix4().lookAt(dest, cube.position, cube.up);
 let angles = new THREE.Euler().setFromRotationMatrix(matrix);
@@ -123,7 +128,7 @@ let render = function () {
 	cube.quaternion.setFromEuler(currentAngles);
 
 	frameCounter += 1;
-	
+
 	// Render the scene
 	renderer.render(scene, camera);
 };
