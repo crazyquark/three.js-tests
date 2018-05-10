@@ -7,7 +7,9 @@ let scene = new THREE.Scene();
 
 // Create a basic perspective camera
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 4;
+camera.position.x = -2;
+camera.position.y = -0.5;
+camera.position.z = 8;
 
 // Start controls
 new THREE.OrbitControls(camera);
@@ -110,10 +112,10 @@ let render = function () {
 	}
 
 	if (Math.abs(angles.x) - Math.abs(currentAngles.x) > 0.0001) {
-		currentAngles.x += angles.x / 10;
+		currentAngles.x += angles.x / 20;
 	}
 	if (Math.abs(angles.y) - Math.abs(currentAngles.y) > 0.0001) {
-		currentAngles.y += angles.y / 10;
+		currentAngles.y += angles.y / 20;
 	}
 
 	cube.quaternion.setFromEuler(currentAngles);
