@@ -30,7 +30,7 @@ document.body.appendChild(renderer.domElement);
 // FUN STARTS HERE
 // ------------------------------------------------
 
-// Create a Cube Mesh with basic material
+// Create a Cube Mesh with basic materials
 let geometry = new THREE.BoxGeometry(1, 1, 1);
 let materials = [
 	new THREE.MeshBasicMaterial({
@@ -67,14 +67,17 @@ scene.add(cube);
 // Render Loop
 let frameCounter = 0;
 
-// cube.rotation.x = Math.PI / 4;
-// cube.rotation.y = Math.PI / 4;
-// cube.rotation.z = Math.PI / 4;
+cube.rotation.x = Math.PI / 4;
+cube.rotation.y = Math.PI / 4;
+cube.rotation.z = Math.PI / 4;
 
 let dest = new THREE.Vector3(1, 1, 1);
 dest = cube.worldToLocal(dest);
 
-let rotMatrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), new THREE.Vector3(0, 1, 0));
+let up = new THREE.Vector3(0, 1, 0);
+up.applyQuaternion(cube.quaternion);
+
+let rotMatrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
 let angles = new THREE.Euler().setFromRotationMatrix(rotMatrix);
 
 let render = function () {
