@@ -89,11 +89,14 @@ let frameCounter = 0;
 
 let incr = 1;
 
+cube.position.x = 1;
+
 let matrix = new THREE.Matrix4().lookAt(dest, cube.position, cube.up);
 let angles = new THREE.Euler().setFromRotationMatrix(matrix);
 angles.z = 0;
 
 let currentAngles = new THREE.Euler();
+
 
 let render = function () {
 	setTimeout(() => {
@@ -110,10 +113,10 @@ let render = function () {
 	// if (cube.position.x <= 0)
 	// 	incr = 1;
 
-	if (currentAngles.x != angles.x) {
+	if (Math.abs(angles.x) - Math.abs(currentAngles.x) > 0.0001) {
 		currentAngles.x += angles.x / 10;
 	}
-	if (currentAngles.y != angles.y) {
+	if (Math.abs(angles.y) - Math.abs(currentAngles.y) > 0.0001) {
 		currentAngles.y += angles.y / 10;
 	}
 
