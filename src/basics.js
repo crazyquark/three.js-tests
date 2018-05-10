@@ -53,7 +53,15 @@ let materials = [
 	}),
 ];
 
+let dest = new THREE.Vector3(2, 2, 2);
+
 let cube = new THREE.Mesh(geometry, materials);
+let cube2 = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+	color: 'purple'
+}));
+cube2.position.copy(dest);
+cube2.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
+
 // cube.position.x = 2;
 // cube.position.y = 2;
 // cube.position.z = 2;
@@ -61,26 +69,25 @@ let cube = new THREE.Mesh(geometry, materials);
 // Add coordinate system
 scene.add(new THREE.AxesHelper(5));
 
+let parent = new THREE.Object3D();
+parent.add(cube);
+
+cube.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
+
 // Add cube to Scene
-scene.add(cube);
+scene.add(parent);
+
+scene.add(cube2);
 
 // Render Loop
 let frameCounter = 0;
 
-cube.rotation.x = Math.PI / 4;
-cube.rotation.y = Math.PI / 4;
-cube.rotation.z = Math.PI / 4;
-
-let dest = new THREE.Vector3(1, 1, 1);
 dest = cube.worldToLocal(dest);
 
-let up = new THREE.Vector3(0, 1, 0);
-up.applyQuaternion(cube.quaternion);
+// parent.position.x = 3;
 
-let rotMatrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
-let angles = new THREE.Euler().setFromRotationMatrix(rotMatrix);
-
-console.log(angles);
+// cube.lookAt(dest);
+cube.lookAt(dest);
 
 let render = function () {
 	setTimeout(() => {
@@ -93,9 +100,7 @@ let render = function () {
 
 	if (frameCounter < 20) {
 		if (frameCounter % 2 == 0) {
-			cube.rotateX(angles.x / 10);
-			cube.rotateY(angles.y / 10);
-			cube.rotateZ(angles.z / 10);
+
 		}
 
 		frameCounter += 1;
