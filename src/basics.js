@@ -87,8 +87,6 @@ scene.add(cube2);
 // Render Loop
 let frameCounter = 0;
 
-let incr = 1;
-
 parent.position.x = 1;
 parent.rotateZ(Math.PI / 4);
 
@@ -102,7 +100,6 @@ angles.z = 0;
 
 let currentAngles = new THREE.Euler();
 
-
 let render = function () {
 	setTimeout(() => {
 		requestAnimationFrame(render);
@@ -111,12 +108,6 @@ let render = function () {
 	if (frameCounter >= 100) {
 		frameCounter = 0;
 	}
-
-	// cube.position.x += incr;
-	// if (cube.position.x > 5)
-	// 	incr = -1;
-	// if (cube.position.x <= 0)
-	// 	incr = 1;
 
 	if (Math.abs(angles.x) - Math.abs(currentAngles.x) > 0.0001) {
 		currentAngles.x += angles.x / 10;
