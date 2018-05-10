@@ -45,8 +45,8 @@ let render = function () {
 	// cube.rotation.y += 0.01;
 	// cube.rotation.z += 0.01;
 
-    let dest = new THREE.Vector3(1, 1, 1);
-    let rotMatrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(0, 1, 0));
+	let dest = new THREE.Vector3(1, 1, 1);
+	let rotMatrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(0, 1, 0));
 
 
 	cube.rotateX(0.01);
