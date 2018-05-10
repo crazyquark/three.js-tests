@@ -90,7 +90,7 @@ let frameCounter = 0;
 parent.position.x = 1;
 parent.rotateZ(Math.PI / 4);
 
-parent.updateMatrixWorld(true);
+parent.updateMatrixWorld();
 
 dest.applyMatrix4(new THREE.Matrix4().getInverse(parent.matrixWorld));
 
