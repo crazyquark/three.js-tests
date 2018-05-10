@@ -80,6 +80,8 @@ up.applyQuaternion(cube.quaternion);
 let rotMatrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
 let angles = new THREE.Euler().setFromRotationMatrix(rotMatrix);
 
+console.log(angles);
+
 let render = function () {
 	setTimeout(() => {
 		requestAnimationFrame(render);
