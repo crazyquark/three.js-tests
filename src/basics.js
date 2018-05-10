@@ -56,7 +56,7 @@ let materials = [
 let dest = new THREE.Vector3(2, 2, 2);
 
 let cube = new THREE.Mesh(geometry, materials);
-let cube2 = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), new THREE.MeshBasicMaterial({
+let cube2 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({
 	color: 'purple'
 }));
 cube2.position.copy(dest);
@@ -78,7 +78,7 @@ scene ->
 */
 let parent = new THREE.Object3D();
 parent.add(cube);
-cube.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
+cube.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
 
 // Add cube to Scene
 scene.add(parent);
@@ -87,23 +87,31 @@ scene.add(cube2);
 // Render Loop
 let frameCounter = 0;
 
+let incr = 1;
 let render = function () {
 	setTimeout(() => {
 		requestAnimationFrame(render);
-	}, 1000 / 30);
+	}, 1000 / 10);
 
-	if (frameCounter < 100) {
-		if (frameCounter % 10 == 0) {
-			cube.position.x += 1;
-			cube.rotation.y += 0.01;
-			cube.rotation.z += 0.01;
-		}
-
-		cube.lookAt(dest);
-
-		frameCounter += 1;
+	if (frameCounter >= 100) {
+		frameCounter = 0;
 	}
 
+	cube.position.x += incr;
+	if (cube.position.x > 5)
+		incr = -1;
+	if (cube.position.x <= 0)
+		incr = 1;
+
+	// cube.worldToLocal(dest);
+
+	let matrix = new THREE.Matrix4().lookAt(dest, cube.position, cube.up);
+	let angles = new THREE.Euler().setFromRotationMatrix(matrix);
+
+	cube.quaternion.setFromRotationMatrix(matrix);
+
+	frameCounter += 1;
+	
 	// Render the scene
 	renderer.render(scene, camera);
 };
