@@ -87,9 +87,9 @@ let frameCounter = 0;
 
 // Mess with the cube
 cube.position.y = 1.2;
-// cube.rotation.z += Math.PI / 3;
+// cube.rotation.x += Math.PI / 3;
 parent.position.x = 1;
-parent.rotation.z += Math.PI / 4;
+parent.rotation.x += Math.PI / 4;
 
 parent.updateMatrixWorld(true);
 cube.updateMatrixWorld(true);
@@ -104,17 +104,11 @@ rot.z = -rot.z;
 
 up.applyEuler(rot);
 
-// let inverseRotation = cube.quaternion.inverse();
-// up.applyQuaternion(inverseRotation);
-// cube.worldToLocal(up);
-// up.applyQuaternion(cube.quaternion);
-// up.applyQuaternion(parent.quaternion);
-
 let matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
 let angles = new THREE.Euler().setFromRotationMatrix(matrix);
 angles.z = 0;
 
-let currentAngles = new THREE.Euler();
+let currentAngles = cube.rotation.clone();
 
 let render = function () {
 	setTimeout(() => {
