@@ -89,7 +89,7 @@ let frameCounter = 0;
 cube.position.y = 1.2;
 // cube.rotateZ(Math.PI / 3);
 parent.position.x = 1;
-// parent.rotateZ(Math.PI / 4);
+parent.rotation.z += Math.PI / 4;
 
 parent.updateMatrixWorld(true);
 cube.updateMatrixWorld(true);
@@ -99,8 +99,9 @@ cube.updateMatrixWorld(true);
 cube.worldToLocal(dest);
 
 let up = new THREE.Vector3(0, 1, 0);
-cube.worldToLocal(up);
-up.applyQuaternion(cube.quaternion);
+// cube.worldToLocal(up);
+// up.applyQuaternion(cube.quaternion);
+// up.applyQuaternion(parent.quaternion);
 
 let matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
 let angles = new THREE.Euler().setFromRotationMatrix(matrix);
