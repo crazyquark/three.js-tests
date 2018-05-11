@@ -100,6 +100,23 @@ cube.worldToLocal(dest);
 
 let up = new THREE.Vector3(0, 1, 0);
 
+let onDocumentKeyDown = function (event) {
+	if (event.key === 'a') {
+		cube2.position.x += 1;
+		dest.x += 1;
+	} else if (event.key === 'd') {
+		cube2.position.x -= 1;
+		dest.x -= 1;
+	} else if (event.key === 'w') {
+		cube2.position.y += 1;
+		dest.y += 1;
+	} else if (event.key === 's') {
+		cube2.position.y -= 1;
+		dest.y -= 1;
+	}
+};
+document.addEventListener('keydown', onDocumentKeyDown, false);
+
 let render = function () {
 	let matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
 	let angles = new THREE.Euler().setFromRotationMatrix(matrix);
@@ -108,12 +125,8 @@ let render = function () {
 	let currentAngles = cube.rotation.clone();
 
 	setTimeout(() => {
-		requestAnimationFrame(render);
-	}, 1000 / 10);
 
-	if (frameCounter >= 100) {
-		frameCounter = 0;
-	}
+	}, 1000 / 10);
 
 	if (Math.abs(angles.x) - Math.abs(currentAngles.x) > 0.0001) {
 		currentAngles.x += angles.x / 20;
@@ -128,6 +141,8 @@ let render = function () {
 
 	// Render the scene
 	renderer.render(scene, camera);
+
+	requestAnimationFrame(render);
 };
 
 render();
