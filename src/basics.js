@@ -86,10 +86,10 @@ scene.add(target);
 let frameCounter = 0;
 
 // Mess with the head
+parent.position.x = 1;
+// parent.rotateX(Math.PI / 4);
 head.position.y = 1.2;
 // head.rotation.x += Math.PI / 3;
-parent.position.x = 1;
-// parent.rotation.x += Math.PI / 4;
 
 parent.updateMatrixWorld(true);
 head.updateMatrixWorld(true);
@@ -155,7 +155,7 @@ function render() {
 			interpolationFactor = 0;
 		}
 	}
-	
+
 	// Render the scene
 	renderer.render(scene, camera);
 
