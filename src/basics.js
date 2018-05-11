@@ -64,10 +64,6 @@ let cube2 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshB
 cube2.position.copy(dest);
 cube2.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
 
-// cube.position.x = 2;
-// cube.position.y = 2;
-// cube.position.z = 2;
-
 // Add coordinate system
 scene.add(new THREE.AxesHelper(5));
 
@@ -89,14 +85,24 @@ scene.add(cube2);
 // Render Loop
 let frameCounter = 0;
 
+// Mess with the cube
+cube.position.y = 1.2;
+// cube.rotateZ(Math.PI / 3);
 parent.position.x = 1;
-parent.rotateZ(Math.PI / 4);
+// parent.rotateZ(Math.PI / 4);
 
-parent.updateMatrixWorld();
+parent.updateMatrixWorld(true);
+cube.updateMatrixWorld(true);
 
-dest.applyMatrix4(new THREE.Matrix4().getInverse(parent.matrixWorld));
+// These 2 are equivalent
+// dest.applyMatrix4(new THREE.Matrix4().getInverse(cube.matrixWorld));
+cube.worldToLocal(dest);
 
-let matrix = new THREE.Matrix4().lookAt(dest, cube.position, cube.up);
+let up = new THREE.Vector3(0, 1, 0);
+cube.worldToLocal(up);
+up.applyQuaternion(cube.quaternion);
+
+let matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
 let angles = new THREE.Euler().setFromRotationMatrix(matrix);
 angles.z = 0;
 
