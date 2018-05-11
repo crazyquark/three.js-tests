@@ -86,9 +86,9 @@ scene.add(cube2);
 let frameCounter = 0;
 
 // Mess with the cube
-// cube.position.y = 1.2;
+cube.position.y = 1.2;
 // cube.rotation.x += Math.PI / 3;
-// parent.position.x = 1;
+parent.position.x = 1;
 // parent.rotation.x += Math.PI / 4;
 
 parent.updateMatrixWorld(true);
@@ -135,6 +135,8 @@ function updateAngles() {
 
 updateAngles();
 
+let animated = false;
+
 function render() {
 	if (Math.abs(angles.x) - Math.abs(currentAngles.x) > 0.0001) {
 		currentAngles.x += angles.x / 20;
@@ -146,7 +148,7 @@ function render() {
 		currentAngles.z += angles.z / 20;
 	}
 
-	cube.quaternion.setFromEuler(currentAngles);
+	cube.quaternion.setFromEuler(animated ? currentAngles : angles);
 
 	frameCounter += 1;
 
