@@ -87,7 +87,7 @@ let frameCounter = 0;
 
 // Mess with the cube
 cube.position.y = 1.2;
-// cube.rotateZ(Math.PI / 3);
+// cube.rotation.z += Math.PI / 3;
 parent.position.x = 1;
 parent.rotation.z += Math.PI / 4;
 
@@ -99,6 +99,8 @@ cube.updateMatrixWorld(true);
 cube.worldToLocal(dest);
 
 let up = new THREE.Vector3(0, 1, 0);
+// let inverseRotation = cube.quaternion.inverse();
+// up.applyQuaternion(inverseRotation);
 // cube.worldToLocal(up);
 // up.applyQuaternion(cube.quaternion);
 // up.applyQuaternion(parent.quaternion);
