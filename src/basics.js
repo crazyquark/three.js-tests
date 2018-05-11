@@ -32,7 +32,7 @@ document.body.appendChild(renderer.domElement);
 // FUN STARTS HERE
 // ------------------------------------------------
 
-// Create a Cube Mesh with basic materials
+// Create a head Mesh with basic materials
 let geometry = new THREE.BoxGeometry(1, 1, 1);
 let materials = [
 	new THREE.MeshBasicMaterial({
@@ -57,12 +57,12 @@ let materials = [
 
 let dest = new THREE.Vector3(2, 2, 2);
 
-let cube = new THREE.Mesh(geometry, materials);
-let cube2 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({
+let head = new THREE.Mesh(geometry, materials);
+let target = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({
 	color: 'purple'
 }));
-cube2.position.copy(dest);
-cube2.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
+target.position.copy(dest);
+target.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
 
 // Add coordinate system
 scene.add(new THREE.AxesHelper(5));
@@ -71,47 +71,47 @@ scene.add(new THREE.AxesHelper(5));
 /*
 scene ->
 	parent ->
-		cube
-	cube2
+		head
+	target
 */
 let parent = new THREE.Object3D();
-parent.add(cube);
-cube.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
+parent.add(head);
+head.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
 
-// Add cube to Scene
+// Add head to Scene
 scene.add(parent);
-scene.add(cube2);
+scene.add(target);
 
 // Render Loop
 let frameCounter = 0;
 
-// Mess with the cube
-cube.position.y = 1.2;
-// cube.rotation.x += Math.PI / 3;
+// Mess with the head
+head.position.y = 1.2;
+// head.rotation.x += Math.PI / 3;
 parent.position.x = 1;
 // parent.rotation.x += Math.PI / 4;
 
 parent.updateMatrixWorld(true);
-cube.updateMatrixWorld(true);
+head.updateMatrixWorld(true);
 
 // These 2 are equivalent
-// dest.applyMatrix4(new THREE.Matrix4().getInverse(cube.matrixWorld));
-cube.worldToLocal(dest);
+// dest.applyMatrix4(new THREE.Matrix4().getInverse(head.matrixWorld));
+head.worldToLocal(dest);
 
 let up = new THREE.Vector3(0, 1, 0);
 
 function onDocumentKeyDown(event) {
 	if (event.key === 'a') {
-		cube2.position.x += 1;
+		target.position.x += 1;
 		dest.x += 1;
 	} else if (event.key === 'd') {
-		cube2.position.x -= 1;
+		target.position.x -= 1;
 		dest.x -= 1;
 	} else if (event.key === 'w') {
-		cube2.position.y += 1;
+		target.position.y += 1;
 		dest.y += 1;
 	} else if (event.key === 's') {
-		cube2.position.y -= 1;
+		target.position.y -= 1;
 		dest.y -= 1;
 	}
 
@@ -143,7 +143,7 @@ let animatedRotation = rotation.clone();
 function render() {
 	animatedRotation.slerp(rotation, interpolationFactor);
 
-	cube.quaternion.copy(animated ? animatedRotation : rotation);
+	head.quaternion.copy(animated ? animatedRotation : rotation);
 
 	frameCounter += 1;
 
