@@ -86,10 +86,10 @@ scene.add(cube2);
 let frameCounter = 0;
 
 // Mess with the cube
-cube.position.y = 1.2;
+// cube.position.y = 1.2;
 // cube.rotation.x += Math.PI / 3;
-parent.position.x = 1;
-parent.rotation.x += Math.PI / 4;
+// parent.position.x = 1;
+// parent.rotation.x += Math.PI / 4;
 
 parent.updateMatrixWorld(true);
 cube.updateMatrixWorld(true);
@@ -100,7 +100,7 @@ cube.worldToLocal(dest);
 
 let up = new THREE.Vector3(0, 1, 0);
 
-let onDocumentKeyDown = function (event) {
+function onDocumentKeyDown(event) {
 	if (event.key === 'a') {
 		cube2.position.x += 1;
 		dest.x += 1;
@@ -114,25 +114,36 @@ let onDocumentKeyDown = function (event) {
 		cube2.position.y -= 1;
 		dest.y -= 1;
 	}
-};
+
+	updateAngles();
+}
+
 document.addEventListener('keydown', onDocumentKeyDown, false);
 
-let render = function () {
-	let matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
-	let angles = new THREE.Euler().setFromRotationMatrix(matrix);
-	angles.z = 0;
+let matrix = new THREE.Matrix4();
+let angles = new THREE.Euler();
 
-	let currentAngles = cube.rotation.clone();
+let currentAngles = cube.rotation.clone();
 
-	setTimeout(() => {
+function updateAngles() {
+	matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
+	angles = new THREE.Euler().setFromRotationMatrix(matrix);
+	// angles.z = 0;
 
-	}, 1000 / 10);
+	currentAngles = cube.rotation.clone();
+}
 
+updateAngles();
+
+function render() {
 	if (Math.abs(angles.x) - Math.abs(currentAngles.x) > 0.0001) {
 		currentAngles.x += angles.x / 20;
 	}
 	if (Math.abs(angles.y) - Math.abs(currentAngles.y) > 0.0001) {
 		currentAngles.y += angles.y / 20;
+	}
+	if (Math.abs(angles.z) - Math.abs(currentAngles.z) > 0.0001) {
+		currentAngles.z += angles.z / 20;
 	}
 
 	cube.quaternion.setFromEuler(currentAngles);
@@ -143,6 +154,6 @@ let render = function () {
 	renderer.render(scene, camera);
 
 	requestAnimationFrame(render);
-};
+}
 
 render();
