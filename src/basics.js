@@ -121,37 +121,41 @@ function onDocumentKeyDown(event) {
 document.addEventListener('keydown', onDocumentKeyDown, false);
 
 let matrix = new THREE.Matrix4();
-let angles = new THREE.Euler();
+let rotation = new THREE.Euler();
 
-let currentAngles = cube.rotation.clone();
+let animating = false;
+let interpolationFactor = 0;
 
 function updateAngles() {
 	matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
-	angles = new THREE.Euler().setFromRotationMatrix(matrix);
-	// angles.z = 0;
+	rotation = new THREE.Quaternion().setFromRotationMatrix(matrix);
 
-	currentAngles = cube.rotation.clone();
+	interpolationFactor = 0;
+	animating = true;
 }
 
 updateAngles();
 
-let animated = false;
+let animated = true;
+
+let animatedRotation = rotation.clone();
 
 function render() {
-	if (Math.abs(angles.x) - Math.abs(currentAngles.x) > 0.0001) {
-		currentAngles.x += angles.x / 20;
-	}
-	if (Math.abs(angles.y) - Math.abs(currentAngles.y) > 0.0001) {
-		currentAngles.y += angles.y / 20;
-	}
-	if (Math.abs(angles.z) - Math.abs(currentAngles.z) > 0.0001) {
-		currentAngles.z += angles.z / 20;
-	}
+	animatedRotation.slerp(rotation, interpolationFactor);
 
-	cube.quaternion.setFromEuler(animated ? currentAngles : angles);
+	cube.quaternion.copy(animated ? animatedRotation : rotation);
 
 	frameCounter += 1;
 
+	if (animating) {
+		interpolationFactor += 1e-3;
+
+		if (interpolationFactor >= 1) {
+			animating = false;
+			interpolationFactor = 0;
+		}
+	}
+	
 	// Render the scene
 	renderer.render(scene, camera);
 
