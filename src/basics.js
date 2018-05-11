@@ -99,6 +99,11 @@ cube.updateMatrixWorld(true);
 cube.worldToLocal(dest);
 
 let up = new THREE.Vector3(0, 1, 0);
+let rot = cube.rotation.clone();
+rot.z = -rot.z;
+
+up.applyEuler(rot);
+
 // let inverseRotation = cube.quaternion.inverse();
 // up.applyQuaternion(inverseRotation);
 // cube.worldToLocal(up);
