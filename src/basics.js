@@ -100,13 +100,13 @@ cube.worldToLocal(dest);
 
 let up = new THREE.Vector3(0, 1, 0);
 
-let matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
-let angles = new THREE.Euler().setFromRotationMatrix(matrix);
-angles.z = 0;
-
-let currentAngles = cube.rotation.clone();
-
 let render = function () {
+	let matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
+	let angles = new THREE.Euler().setFromRotationMatrix(matrix);
+	angles.z = 0;
+
+	let currentAngles = cube.rotation.clone();
+
 	setTimeout(() => {
 		requestAnimationFrame(render);
 	}, 1000 / 10);
