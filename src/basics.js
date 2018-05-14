@@ -113,6 +113,12 @@ function onDocumentKeyDown(event) {
 	} else if (event.key === 's') {
 		target.position.y -= 1;
 		dest.y -= 1;
+	} else if (event.key === 'z') {
+		target.position.z -= 1;
+		dest.z -= 1;
+	} else if (event.key === 'x') {
+		target.position.z += 1;
+		dest.z += 1;
 	}
 
 	updateAngles();
