@@ -127,7 +127,7 @@ function onDocumentKeyDown(event) {
 document.addEventListener('keydown', onDocumentKeyDown, false);
 
 let matrix = new THREE.Matrix4();
-let rotation = new THREE.Euler();
+let rotation = new THREE.Quaternion();
 
 let animating = false;
 let interpolationFactor = 0;
