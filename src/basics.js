@@ -47,8 +47,8 @@ loader.load(
 		console.log(gltf);
 
 		head = gltf.scene.children[0];
-		leftEye = gltf.scene.children[1];
-		rightEye = gltf.scene.children[2];
+		leftEye = head.children[0];
+		rightEye = head.children[1];
 
 		scene.add(gltf.scene);
 		
