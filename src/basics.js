@@ -43,6 +43,7 @@ let leftEye = {};
 let rightEye = {};
 let animations = {};
 let mixer = {};
+let clip = {};
 let mixerRunning = false;
 
 let clock = new THREE.Clock();
@@ -126,8 +127,13 @@ function run() {
 			target.position.z += 1;
 			dest.z += 1;
 		} else if (event.key === 'p') {
-			mixer.clipAction(animations[0]).play();
-			mixerRunning = true;
+			if (!mixerRunning) {
+				clip = mixer.clipAction(animations[0]).play();
+				mixerRunning = true;
+			} else {
+				clip.stop();
+				mixerRunning = false;
+			}
 		}
 
 		updateAngles();
