@@ -43,6 +43,7 @@ let leftEye = {};
 let rightEye = {};
 let animations = {};
 let mixer = {};
+let mixerRunning = false;
 
 let clock = new THREE.Clock();
 
@@ -61,8 +62,6 @@ loader.load(
 
 		scene.add(gltf.scene);
 
-		mixer.clipAction(animations[0]).play();
-		
 		run();
 	}
 );
@@ -126,6 +125,9 @@ function run() {
 		} else if (event.key === 'x') {
 			target.position.z += 1;
 			dest.z += 1;
+		} else if (event.key === 'p') {
+			mixer.clipAction(animations[0]).play();
+			mixerRunning = true;
 		}
 
 		updateAngles();
@@ -171,7 +173,9 @@ function run() {
 
 
 		// Update animation
-		mixer.update(clock.getDelta());
+		if (mixerRunning) {
+			mixer.update(clock.getDelta());
+		}
 
 		updateAngles();
 
