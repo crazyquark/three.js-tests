@@ -134,6 +134,8 @@ function run() {
 				clip.stop();
 				mixerRunning = false;
 			}
+		} else if (event.key === 'o') {
+			animated = !animated;
 		}
 
 		updateAngles();
