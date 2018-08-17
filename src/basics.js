@@ -147,12 +147,14 @@ function run() {
 	let animating = false;
 	let interpolationFactor = 0;
 
-	function updateAngles() {
+	function updateAngles(reset = true) {
 		matrix = new THREE.Matrix4().lookAt(dest, head.position, up);
 		rotation = new THREE.Quaternion().setFromRotationMatrix(matrix);
 
-		interpolationFactor = 0;
-		animating = true;
+		if (reset) {
+			interpolationFactor = 0;
+			animating = true;
+		}
 	}
 
 	
@@ -181,6 +183,9 @@ function run() {
 		// Update animation
 		if (mixerRunning) {
 			mixer.update(clock.getDelta());
+
+			// Re-compute rotation
+			updateAngles(false);
 		}
 
 		// Render the scene
