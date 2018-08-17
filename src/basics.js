@@ -155,15 +155,15 @@ function run() {
 		animating = true;
 	}
 
+	
+	let animated = true;
+	let animatedRotation = rotation.clone();
+	
 	updateAngles();
 
-	let animated = true;
-
-	let animatedRotation = rotation.clone();
-
 	function render() {
+		// Rotate head
 		animatedRotation.slerp(rotation, interpolationFactor);
-
 		head.quaternion.copy(animated ? animatedRotation : rotation);
 
 		frameCounter += 1;
