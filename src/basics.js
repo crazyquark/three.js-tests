@@ -38,149 +38,133 @@ scene.add(light);
 
 // Instantiate a loader
 let loader = new THREE.GLTFLoader();
+let head = {};
 loader.load(
 	'models/head.gltf',
 	(gltf) => {
 		console.log(gltf);
 
+		head = gltf.scene.children[0];
+
 		scene.add(gltf.scene);
+		
+		run();
 	}
 );
 
-// Create a head Mesh with basic materials
-let geometry = new THREE.BoxGeometry(1, 1, 1);
-let materials = [
-	new THREE.MeshBasicMaterial({
-		color: 'red'
-	}),
-	new THREE.MeshBasicMaterial({
-		color: 'green'
-	}),
-	new THREE.MeshBasicMaterial({
-		color: 'blue'
-	}),
-	new THREE.MeshBasicMaterial({
-		color: 'yellow'
-	}),
-	new THREE.MeshBasicMaterial({
-		color: 'cyan'
-	}),
-	new THREE.MeshBasicMaterial({
-		color: 'magenta'
-	}),
-];
+function run() {
+	let dest = new THREE.Vector3(2, 2, 2);
 
-let dest = new THREE.Vector3(2, 2, 2);
+	// let head = new THREE.Mesh(geometry, materials);
+	let target = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({
+		color: 'purple'
+	}));
+	target.position.copy(dest);
+	target.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
 
-let head = new THREE.Mesh(geometry, materials);
-let target = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({
-	color: 'purple'
-}));
-target.position.copy(dest);
-target.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
+	// Add coordinate system
+	scene.add(new THREE.AxesHelper(5));
 
-// Add coordinate system
-scene.add(new THREE.AxesHelper(5));
+	// Objects setup
+	/*
+	scene ->
+		parent ->
+			head
+		target
+	*/
+	let parent = new THREE.Object3D();
+	parent.add(head);
+	head.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
 
-// Objects setup
-/*
-scene ->
-	parent ->
-		head
-	target
-*/
-let parent = new THREE.Object3D();
-parent.add(head);
-head.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
+	// Add head to Scene
+	scene.add(parent);
+	scene.add(target);
 
-// Add head to Scene
-scene.add(parent);
-scene.add(target);
+	// Render Loop
+	let frameCounter = 0;
 
-// Render Loop
-let frameCounter = 0;
+	// Mess with the head
+	parent.position.x = 1;
+	// parent.rotateX(Math.PI / 4);
+	head.position.y = 1.2;
+	// head.rotation.x += Math.PI / 3;
 
-// Mess with the head
-parent.position.x = 1;
-// parent.rotateX(Math.PI / 4);
-head.position.y = 1.2;
-// head.rotation.x += Math.PI / 3;
+	parent.updateMatrixWorld(true);
+	head.updateMatrixWorld(true);
 
-parent.updateMatrixWorld(true);
-head.updateMatrixWorld(true);
+	// These 2 are equivalent
+	// dest.applyMatrix4(new THREE.Matrix4().getInverse(head.matrixWorld));
+	head.worldToLocal(dest);
 
-// These 2 are equivalent
-// dest.applyMatrix4(new THREE.Matrix4().getInverse(head.matrixWorld));
-head.worldToLocal(dest);
+	let up = new THREE.Vector3(0, 1, 0);
 
-let up = new THREE.Vector3(0, 1, 0);
+	function onDocumentKeyDown(event) {
+		if (event.key === 'a') {
+			target.position.x += 1;
+			dest.x += 1;
+		} else if (event.key === 'd') {
+			target.position.x -= 1;
+			dest.x -= 1;
+		} else if (event.key === 'w') {
+			target.position.y += 1;
+			dest.y += 1;
+		} else if (event.key === 's') {
+			target.position.y -= 1;
+			dest.y -= 1;
+		} else if (event.key === 'z') {
+			target.position.z -= 1;
+			dest.z -= 1;
+		} else if (event.key === 'x') {
+			target.position.z += 1;
+			dest.z += 1;
+		}
 
-function onDocumentKeyDown(event) {
-	if (event.key === 'a') {
-		target.position.x += 1;
-		dest.x += 1;
-	} else if (event.key === 'd') {
-		target.position.x -= 1;
-		dest.x -= 1;
-	} else if (event.key === 'w') {
-		target.position.y += 1;
-		dest.y += 1;
-	} else if (event.key === 's') {
-		target.position.y -= 1;
-		dest.y -= 1;
-	} else if (event.key === 'z') {
-		target.position.z -= 1;
-		dest.z -= 1;
-	} else if (event.key === 'x') {
-		target.position.z += 1;
-		dest.z += 1;
+		updateAngles();
+	}
+
+	document.addEventListener('keydown', onDocumentKeyDown, false);
+
+	let matrix = new THREE.Matrix4();
+	let rotation = new THREE.Quaternion();
+
+	let animating = false;
+	let interpolationFactor = 0;
+
+	function updateAngles() {
+		matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
+		rotation = new THREE.Quaternion().setFromRotationMatrix(matrix);
+
+		interpolationFactor = 0;
+		animating = true;
 	}
 
 	updateAngles();
-}
 
-document.addEventListener('keydown', onDocumentKeyDown, false);
+	let animated = true;
 
-let matrix = new THREE.Matrix4();
-let rotation = new THREE.Quaternion();
+	let animatedRotation = rotation.clone();
 
-let animating = false;
-let interpolationFactor = 0;
+	function render() {
+		animatedRotation.slerp(rotation, interpolationFactor);
 
-function updateAngles() {
-	matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
-	rotation = new THREE.Quaternion().setFromRotationMatrix(matrix);
+		head.quaternion.copy(animated ? animatedRotation : rotation);
 
-	interpolationFactor = 0;
-	animating = true;
-}
+		frameCounter += 1;
 
-updateAngles();
+		if (animating) {
+			interpolationFactor += 1e-3;
 
-let animated = true;
-
-let animatedRotation = rotation.clone();
-
-function render() {
-	animatedRotation.slerp(rotation, interpolationFactor);
-
-	head.quaternion.copy(animated ? animatedRotation : rotation);
-
-	frameCounter += 1;
-
-	if (animating) {
-		interpolationFactor += 1e-3;
-
-		if (interpolationFactor >= 1) {
-			animating = false;
-			interpolationFactor = 0;
+			if (interpolationFactor >= 1) {
+				animating = false;
+				interpolationFactor = 0;
+			}
 		}
+
+		// Render the scene
+		renderer.render(scene, camera);
+
+		requestAnimationFrame(render);
 	}
 
-	// Render the scene
-	renderer.render(scene, camera);
-
-	requestAnimationFrame(render);
+	render();
 }
-
-render();
