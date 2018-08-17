@@ -41,6 +41,11 @@ let loader = new THREE.GLTFLoader();
 let head = {};
 let leftEye = {};
 let rightEye = {};
+let animations = {};
+let mixer = {};
+
+let clock = new THREE.Clock();
+
 loader.load(
 	'models/head.gltf',
 	(gltf) => {
@@ -50,7 +55,13 @@ loader.load(
 		leftEye = head.children[0];
 		rightEye = head.children[1];
 
+		animations = gltf.animations;
+
+		mixer = new THREE.AnimationMixer(head);
+
 		scene.add(gltf.scene);
+
+		// mixer.clipAction(animations[0]).play();
 		
 		run();
 	}
@@ -86,12 +97,6 @@ function run() {
 
 	// Render Loop
 	let frameCounter = 0;
-
-	// Mess with the head
-	parent.position.x = 1;
-	// parent.rotateX(Math.PI / 4);
-	head.position.y = 1.2;
-	// head.rotation.x += Math.PI / 3;
 
 	parent.updateMatrixWorld(true);
 	head.updateMatrixWorld(true);
@@ -135,7 +140,7 @@ function run() {
 	let interpolationFactor = 0;
 
 	function updateAngles() {
-		matrix = new THREE.Matrix4().lookAt(dest, new THREE.Vector3(), up);
+		matrix = new THREE.Matrix4().lookAt(dest, head.position, up);
 		rotation = new THREE.Quaternion().setFromRotationMatrix(matrix);
 
 		interpolationFactor = 0;
@@ -168,6 +173,8 @@ function run() {
 		renderer.render(scene, camera);
 
 		requestAnimationFrame(render);
+
+		// mixer.update(clock.getDelta());
 	}
 
 	render();
