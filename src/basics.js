@@ -61,7 +61,7 @@ loader.load(
 
 		scene.add(gltf.scene);
 
-		// mixer.clipAction(animations[0]).play();
+		mixer.clipAction(animations[0]).play();
 		
 		run();
 	}
@@ -169,12 +169,16 @@ function run() {
 			}
 		}
 
+
+		// Update animation
+		mixer.update(clock.getDelta());
+
+		updateAngles();
+
 		// Render the scene
 		renderer.render(scene, camera);
 
 		requestAnimationFrame(render);
-
-		// mixer.update(clock.getDelta());
 	}
 
 	render();
