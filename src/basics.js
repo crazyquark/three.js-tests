@@ -177,8 +177,6 @@ function run() {
 			mixer.update(clock.getDelta());
 		}
 
-		updateAngles();
-
 		// Render the scene
 		renderer.render(scene, camera);
 
