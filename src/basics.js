@@ -39,12 +39,16 @@ scene.add(light);
 // Instantiate a loader
 let loader = new THREE.GLTFLoader();
 let head = {};
+let leftEye = {};
+let rightEye = {};
 loader.load(
 	'models/head.gltf',
 	(gltf) => {
 		console.log(gltf);
 
 		head = gltf.scene.children[0];
+		leftEye = gltf.scene.children[1];
+		rightEye = gltf.scene.children[2];
 
 		scene.add(gltf.scene);
 		
