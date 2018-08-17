@@ -32,6 +32,21 @@ document.body.appendChild(renderer.domElement);
 // FUN STARTS HERE
 // ------------------------------------------------
 
+let light = new THREE.HemisphereLight(0xbbbbff, 0x444422);
+light.position.set(0, 1, 0);
+scene.add(light);
+
+// Instantiate a loader
+let loader = new THREE.GLTFLoader();
+loader.load(
+	'models/head.gltf',
+	(gltf) => {
+		console.log(gltf);
+
+		scene.add(gltf.scene);
+	}
+);
+
 // Create a head Mesh with basic materials
 let geometry = new THREE.BoxGeometry(1, 1, 1);
 let materials = [
