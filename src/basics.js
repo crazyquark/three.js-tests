@@ -90,7 +90,9 @@ function run() {
 	*/
 	let parent = new THREE.Object3D();
 	parent.add(head);
-	head.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
+	leftEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
+	rightEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
+
 
 	// Add head to Scene
 	scene.add(parent);
@@ -158,13 +160,18 @@ function run() {
 
 	let matrix = new THREE.Matrix4();
 	let rotation = new THREE.Quaternion();
+	let matrix2 = new THREE.Matrix4();
+	let rotation2 = new THREE.Quaternion();
 
 	let animating = false;
 	let interpolationFactor = 0;
 
 	function updateAngles(reset = true) {
-		matrix = new THREE.Matrix4().lookAt(dest, head.position, up);
+		matrix = new THREE.Matrix4().lookAt(dest, leftEye.position, up);
 		rotation = new THREE.Quaternion().setFromRotationMatrix(matrix);
+
+		matrix2 = new THREE.Matrix4().lookAt(dest, rightEye.position, up);
+		rotation2 = new THREE.Quaternion().setFromRotationMatrix(matrix2);
 
 		if (reset) {
 			interpolationFactor = 0;
@@ -175,13 +182,16 @@ function run() {
 	
 	let animated = true;
 	let animatedRotation = rotation.clone();
+	let animatedRotation2 = rotation2.clone();
 	
 	updateAngles();
 
 	function render() {
 		// Rotate head
 		animatedRotation.slerp(rotation, interpolationFactor);
-		head.quaternion.copy(animated ? animatedRotation : rotation);
+		animatedRotation2.slerp(rotation2, interpolationFactor);
+		leftEye.quaternion.copy(animated ? animatedRotation : rotation);
+		rightEye.quaternion.copy(animated ? animatedRotation2 : rotation2);
 
 		frameCounter += 1;
 
