@@ -45,6 +45,7 @@ let animations = {};
 let mixer = {};
 let clip = {};
 let mixerRunning = false;
+let clipWeight = 1.0;
 
 let clock = new THREE.Clock();
 
@@ -128,12 +129,24 @@ function run() {
 			dest.z += 1;
 		} else if (event.key === 'p') {
 			if (!mixerRunning) {
-				clip = mixer.clipAction(animations[0]).play();
+				clip = mixer.clipAction(animations[0]);
+				clip.play();
 				mixerRunning = true;
 			} else {
 				clip.stop();
 				mixerRunning = false;
 			}
+		} else if (event.key === '-' || event.key === '+') {
+			let increment = event.key  === '+' ? 0.2 : -0.2;
+			clipWeight += increment;
+
+			// clamp
+			clipWeight = Math.max(0, clipWeight);
+			clipWeight = Math.min(1, clipWeight);
+
+			clip.setEffectiveWeight(clipWeight);
+			
+			console.log('Clip weight: ', clipWeight);
 		} else if (event.key === 'o') {
 			animated = !animated;
 		}
