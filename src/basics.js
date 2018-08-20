@@ -144,7 +144,7 @@ function run() {
 			clipWeight = Math.max(0, clipWeight);
 			clipWeight = Math.min(1, clipWeight);
 
-			clip.setEffectiveWeight(clipWeight);
+			clip.weight = clipWeight;
 			
 			console.log('Clip weight: ', clipWeight);
 		} else if (event.key === 'o') {
