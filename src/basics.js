@@ -28,6 +28,9 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 // Append Renderer to DOM
 document.body.appendChild(renderer.domElement);
 
+// Used to display debug info
+let infoElement = document.getElementById('info');
+
 // ------------------------------------------------
 // FUN STARTS HERE
 // ------------------------------------------------
@@ -113,11 +116,11 @@ function run() {
 
 	function onDocumentKeyDown(event) {
 		if (event.key === 'A') {
-			target.position.x += 1;
-			dest.x += 1;
-		} else if (event.key === 'D') {
 			target.position.x -= 1;
 			dest.x -= 1;
+		} else if (event.key === 'D') {
+			target.position.x += 1;
+			dest.x += 1;
 		} else if (event.key === 'W') {
 			target.position.y += 1;
 			dest.y += 1;
@@ -286,6 +289,13 @@ function run() {
 			// Re-compute rotation
 			updateAngles(false);
 		}
+
+		let headPos = new THREE.Vector3();
+		head.getWorldPosition(headPos);
+		infoElement.innerHTML = 'Head: ' + JSON.stringify(headPos);
+		let targetPos = new THREE.Vector3();
+		target.getWorldPosition(targetPos);
+		infoElement.innerHTML += '</br>Target: ' + JSON.stringify(targetPos)
 
 		// Update tween
 		TWEEN.update();
