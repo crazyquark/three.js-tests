@@ -90,8 +90,8 @@ function run() {
 	*/
 	let parent = new THREE.Object3D();
 	parent.add(head);
-	leftEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
-	rightEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 3));
+	leftEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 5));
+	rightEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 5));
 
 
 	// Add head to Scene
@@ -137,6 +137,8 @@ function run() {
 			} else {
 				clip.stop();
 				mixerRunning = false;
+
+				updateAngles(false);
 			}
 		} else if (event.key === '-' || event.key === '+') {
 			let increment = event.key  === '+' ? 0.2 : -0.2;
@@ -167,16 +169,28 @@ function run() {
 	let interpolationFactor = 0;
 
 	function updateAngles(reset = true) {
-		matrix = new THREE.Matrix4().lookAt(dest, leftEye.position, up);
+		leftEye.updateMatrixWorld(true);
+		rightEye.updateMatrixWorld(true);
+
+		leftEyePos = new THREE.Vector3();
+		leftEye.getWorldPosition(leftEyePos);
+		rightEyePos = new THREE.Vector3();
+		rightEye.getWorldPosition(rightEyePos);
+
+		matrix = new THREE.Matrix4().lookAt(dest, leftEyePos, up);
 		rotation = new THREE.Quaternion().setFromRotationMatrix(matrix);
 
-		matrix2 = new THREE.Matrix4().lookAt(dest, rightEye.position, up);
+		matrix2 = new THREE.Matrix4().lookAt(dest, rightEyePos, up);
 		rotation2 = new THREE.Quaternion().setFromRotationMatrix(matrix2);
 
 		if (reset) {
 			interpolationFactor = 0;
 			animating = true;
 		}
+
+		console.log('Head: ', head.position);
+		console.log('L Eye: ', leftEye.position);
+		console.log('R Eye: ', rightEye.position);
 	}
 
 	
