@@ -169,8 +169,8 @@ function run() {
 	let interpolationFactor = 0;
 
 	function updateAngles(reset = true) {
-		leftEye.updateMatrixWorld(true);
-		rightEye.updateMatrixWorld(true);
+		// leftEye.updateMatrixWorld(true);
+		// rightEye.updateMatrixWorld(true);
 
 		leftEyePos = new THREE.Vector3();
 		leftEye.getWorldPosition(leftEyePos);
@@ -188,9 +188,9 @@ function run() {
 			animating = true;
 		}
 
-		console.log('Head: ', head.position);
-		console.log('L Eye: ', leftEye.position);
-		console.log('R Eye: ', rightEye.position);
+		// console.log('Head: ', head.position);
+		// console.log('L Eye: ', leftEye.position);
+		// console.log('R Eye: ', rightEye.position);
 	}
 
 	
