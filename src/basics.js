@@ -46,6 +46,7 @@ let mixer = {};
 let clip = {};
 let mixerRunning = false;
 let clipWeight = 1.0;
+let tweenDuration = 2000;
 
 let clock = new THREE.Clock();
 
@@ -111,25 +112,25 @@ function run() {
 	let up = new THREE.Vector3(0, 1, 0);
 
 	function onDocumentKeyDown(event) {
-		if (event.key === 'a') {
+		if (event.key === 'A') {
 			target.position.x += 1;
 			dest.x += 1;
-		} else if (event.key === 'd') {
+		} else if (event.key === 'D') {
 			target.position.x -= 1;
 			dest.x -= 1;
-		} else if (event.key === 'w') {
+		} else if (event.key === 'W') {
 			target.position.y += 1;
 			dest.y += 1;
-		} else if (event.key === 's') {
+		} else if (event.key === 'S') {
 			target.position.y -= 1;
 			dest.y -= 1;
-		} else if (event.key === 'z') {
+		} else if (event.key === 'Z') {
 			target.position.z -= 1;
 			dest.z -= 1;
-		} else if (event.key === 'x') {
+		} else if (event.key === 'X') {
 			target.position.z += 1;
 			dest.z += 1;
-		} else if (event.key === 'p') {
+		} else if (event.key === 'p' || event.key === 'P') {
 			if (!mixerRunning) {
 				clip = mixer.clipAction(animations[0]);
 				clip.play();
@@ -149,20 +150,61 @@ function run() {
 			clip.weight = clipWeight;
 
 			console.log('Clip weight: ', clipWeight);
-		} else if (event.key === 'o') {
+		} else if (event.key === 'o' || event.key === '0') {
 			animated = !animated;
-		} else if (event.key === 'A') {
+		} else if (event.key === 'a') {
 			// LEFT
-			parent.position.x -= 1;
-		} else if (event.key === 'W') {
+			// parent.position.x -= 1;
+			let tween = new TWEEN.Tween(parent.position)
+				.to({
+					x: parent.position.x - 1,
+					y: parent.position.y,
+					z: parent.position.z
+				}, tweenDuration)
+				.easing(TWEEN.Easing.Quadratic.Out)
+				.onUpdate(() => {
+					updateAngles(false);
+				})
+				.start();
+		} else if (event.key === 'w') {
 			// UP
-			parent.position.y += 1;
-		} else if (event.key === 'D') {
+			let tween = new TWEEN.Tween(parent.position)
+			.to({
+				x: parent.position.x,
+				y: parent.position.y + 1,
+				z: parent.position.z
+			}, tweenDuration)
+			.easing(TWEEN.Easing.Quadratic.Out)
+			.onUpdate(() => {
+				updateAngles(false);
+			})
+			.start();
+		} else if (event.key === 'd') {
 			// RIGHT
-			parent.position.x += 1;
-		} else if (event.key === 'S') {
+			let tween = new TWEEN.Tween(parent.position)
+			.to({
+				x: parent.position.x + 1,
+				y: parent.position.y,
+				z: parent.position.z
+			}, tweenDuration)
+			.easing(TWEEN.Easing.Quadratic.Out)
+			.onUpdate(() => {
+				updateAngles(false);
+			})
+			.start();
+		} else if (event.key === 's') {
 			// DOWN
-			parent.position.y -= 1;
+			let tween = new TWEEN.Tween(parent.position)
+			.to({
+				x: parent.position.x,
+				y: parent.position.y - 1,
+				z: parent.position.z
+			}, tweenDuration)
+			.easing(TWEEN.Easing.Quadratic.Out)
+			.onUpdate(() => {
+				updateAngles(false);
+			})
+			.start();
 		}
 		updateAngles();
 	}
@@ -226,7 +268,7 @@ function run() {
 			if (interpolationFactor >= 1) {
 				animating = false;
 				interpolationFactor = 0;
-			
+
 				// Restart
 				if (mixerRunning) {
 					animating = true;
@@ -245,6 +287,8 @@ function run() {
 			updateAngles(false);
 		}
 
+		// Update tween
+		TWEEN.update();
 
 		// Render the scene
 		renderer.render(scene, camera);
