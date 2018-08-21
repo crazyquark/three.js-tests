@@ -157,8 +157,8 @@ function run() {
 			animated = !animated;
 		} else if (event.key === 'a') {
 			// LEFT
-			if (parent.tween) {
-				parent.tween.stop();
+			if (parent.tween !== undefined && parent.tween.isPlaying()) {
+				return;
 			}
 
 			parent.tween = new TWEEN.Tween(parent.position)
@@ -174,8 +174,8 @@ function run() {
 				.start();
 		} else if (event.key === 'w') {
 			// UP
-			if (parent.tween) {
-				parent.tween.stop();
+			if (parent.tween !== undefined && parent.tween.isPlaying()) {
+				return;
 			}
 
 			parent.tween = new TWEEN.Tween(parent.position)
@@ -191,8 +191,8 @@ function run() {
 			.start();
 		} else if (event.key === 'd') {
 			// RIGHT
-			if (parent.tween) {
-				parent.tween.stop();
+			if (parent.tween !== undefined && parent.tween.isPlaying()) {
+				return;
 			}
 
 			parent.tween = new TWEEN.Tween(parent.position)
@@ -208,8 +208,8 @@ function run() {
 			.start();
 		} else if (event.key === 's') {
 			// DOWN
-			if (parent.tween) {
-				parent.tween.stop();
+			if (parent.tween !== undefined && parent.tween.isPlaying()) {
+				return;
 			}
 
 			parent.tween = new TWEEN.Tween(parent.position)
