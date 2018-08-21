@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/crazyquark/three.js-tests#readme",
   "dependencies": {
-    "three": "^0.92.0"
+    "three": "^0.92.0",
+    "tweenjs": "^1.0.2"
   }
 }
