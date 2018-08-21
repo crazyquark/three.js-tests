@@ -151,16 +151,16 @@ function run() {
 			console.log('Clip weight: ', clipWeight);
 		} else if (event.key === 'o') {
 			animated = !animated;
-		} else if (event.keyCode === 37) { 
+		} else if (event.key === 'A') { 
 			// LEFT
 			head.position.x -= 1;
-		} else if (event.keyCode === 38) {
+		} else if (event.key === 'W') {
 			// UP
 			head.position.y += 1;
-		} else if (event.keyCode === 39) {
+		} else if (event.key === 'D') {
 			// RIGHT
 			head.position.x += 1;
-		} else if (event.keyCode === 40) {
+		} else if (event.key === 'S') {
 			// DOWN
 			head.position.y -= 1;
 		}
