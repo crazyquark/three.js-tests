@@ -139,7 +139,7 @@ function run() {
 				mixerRunning = false;
 			}
 		} else if (event.key === '-' || event.key === '+') {
-			let increment = event.key  === '+' ? 0.2 : -0.2;
+			let increment = event.key === '+' ? 0.2 : -0.2;
 			clipWeight += increment;
 
 			// clamp
@@ -147,22 +147,22 @@ function run() {
 			clipWeight = Math.min(1, clipWeight);
 
 			clip.weight = clipWeight;
-			
+
 			console.log('Clip weight: ', clipWeight);
 		} else if (event.key === 'o') {
 			animated = !animated;
-		} else if (event.key === 'A') { 
+		} else if (event.key === 'A') {
 			// LEFT
-			head.position.x -= 1;
+			parent.position.x -= 1;
 		} else if (event.key === 'W') {
 			// UP
-			head.position.y += 1;
+			parent.position.y += 1;
 		} else if (event.key === 'D') {
 			// RIGHT
-			head.position.x += 1;
+			parent.position.x += 1;
 		} else if (event.key === 'S') {
 			// DOWN
-			head.position.y -= 1;
+			parent.position.y -= 1;
 		}
 		updateAngles();
 	}
@@ -178,7 +178,8 @@ function run() {
 	let interpolationFactor = 0;
 
 	function updateAngles(reset = true) {
-		head.updateMatrixWorld(true);
+		parent.updateMatrixWorld(true);
+		// head.updateMatrixWorld(true);
 		// leftEye.updateMatrixWorld(true);
 		// rightEye.updateMatrixWorld(true);
 
@@ -203,11 +204,11 @@ function run() {
 		// console.log('R Eye: ', rightEye.position);
 	}
 
-	
+
 	let animated = true;
 	let animatedRotation = rotation.clone();
 	let animatedRotation2 = rotation2.clone();
-	
+
 	updateAngles();
 
 	function render() {
@@ -225,7 +226,14 @@ function run() {
 			if (interpolationFactor >= 1) {
 				animating = false;
 				interpolationFactor = 0;
+			
+				// Restart
+				if (mixerRunning) {
+					animating = true;
+					interpolationFactor = 0;
+				}
 			}
+
 		}
 
 
@@ -236,6 +244,7 @@ function run() {
 			// Re-compute rotation
 			updateAngles(false);
 		}
+
 
 		// Render the scene
 		renderer.render(scene, camera);
