@@ -157,8 +157,11 @@ function run() {
 			animated = !animated;
 		} else if (event.key === 'a') {
 			// LEFT
-			// parent.position.x -= 1;
-			let tween = new TWEEN.Tween(parent.position)
+			if (parent.tween) {
+				parent.tween.stop();
+			}
+
+			parent.tween = new TWEEN.Tween(parent.position)
 				.to({
 					x: parent.position.x - 1,
 					y: parent.position.y,
@@ -171,7 +174,11 @@ function run() {
 				.start();
 		} else if (event.key === 'w') {
 			// UP
-			let tween = new TWEEN.Tween(parent.position)
+			if (parent.tween) {
+				parent.tween.stop();
+			}
+
+			parent.tween = new TWEEN.Tween(parent.position)
 			.to({
 				x: parent.position.x,
 				y: parent.position.y + 1,
@@ -184,7 +191,11 @@ function run() {
 			.start();
 		} else if (event.key === 'd') {
 			// RIGHT
-			let tween = new TWEEN.Tween(parent.position)
+			if (parent.tween) {
+				parent.tween.stop();
+			}
+
+			parent.tween = new TWEEN.Tween(parent.position)
 			.to({
 				x: parent.position.x + 1,
 				y: parent.position.y,
@@ -197,7 +208,11 @@ function run() {
 			.start();
 		} else if (event.key === 's') {
 			// DOWN
-			let tween = new TWEEN.Tween(parent.position)
+			if (parent.tween) {
+				parent.tween.stop();
+			}
+
+			parent.tween = new TWEEN.Tween(parent.position)
 			.to({
 				x: parent.position.x,
 				y: parent.position.y - 1,
