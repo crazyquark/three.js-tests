@@ -45,12 +45,13 @@ scene.add(light);
 
 // Instantiate a loader
 let loader = new THREE.GLTFLoader();
+let parent = new THREE.Object3D();
 let head = {};
 let leftEye = {};
 let rightEye = {};
 let animations = {};
 let mixer = {};
-let clip = {};
+let clipAction = {};
 let mixerRunning = false;
 let clipWeight = 1.0;
 let tweenDuration = 2000;
@@ -69,7 +70,7 @@ loader.load(
 		animations = gltf.animations;
 
 		mixer = new THREE.AnimationMixer(head);
-		clip = mixer.clipAction(animations[0]);
+		clipAction = mixer.clipAction(animations[0]);
 
 		scene.add(gltf.scene);
 
@@ -97,7 +98,6 @@ function run() {
 			head
 		target
 	*/
-	let parent = new THREE.Object3D();
 	parent.add(head);
 	leftEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 5));
 	rightEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 5));
@@ -120,20 +120,21 @@ function run() {
 	let up = new THREE.Vector3(0, 1, 0);
 
 	let animCounter = 0;
+
 	function createAnimClip(target) {
 		let duration = animations[0].duration;
 		let noSamples = animations[0].tracks[0].times.length;
 
 		let values = [];
-		for (let i = 0; i < noSamples; i ++) {
-			values[i * 3] 	  = target.x || 0;
+		for (let i = 0; i < noSamples; i++) {
+			values[i * 3] = target.x || 0;
 			values[i * 3 + 1] = target.y || 0;
 			values[i * 3 + 2] = target.z || 0;
 		}
 
 		let positionKF = new THREE.VectorKeyframeTrack('.position', [...Array(noSamples).keys()], values);
-		
-		let dummyClip = new THREE.AnimationClip('Anim' + animCounter, duration , [positionKF]);
+
+		let dummyClip = new THREE.AnimationClip('Anim', duration, [positionKF]);
 
 		return dummyClip;
 	}
@@ -159,10 +160,10 @@ function run() {
 			dest.z += 1;
 		} else if (event.key === 'p' || event.key === 'P') {
 			if (!mixerRunning) {
-				clip.play();
+				clipAction.play();
 				mixerRunning = true;
 			} else {
-				if (clip.stop !== undefined) clip.stop();
+				if (clipAction.stop !== undefined) clipAction.stop();
 				mixerRunning = false;
 			}
 		} else if (event.key === '-' || event.key === '+') {
@@ -173,76 +174,82 @@ function run() {
 			clipWeight = Math.max(0, clipWeight);
 			clipWeight = Math.min(1, clipWeight);
 
-			clip.weight = clipWeight;
+			clipAction.setEffectiveWeight(clipWeight);
+			clipAction.setEffectiveTimeScale(1);
 
 			console.log('Clip weight: ', clipWeight);
 		} else if (event.key === 'o' || event.key === '0') {
 			animated = !animated;
 		} else if (event.key === 'a') {
 			// LEFT
-			if (head.posClip !== undefined) {
-				head.posClip.stop();
+			// Warning: read position BEFORE stoping clip
+			let endPos = new THREE.Vector3();
+			head.getWorldPosition(endPos);
+			endPos.x -= 1;
+			
+			if (head.posAction !== undefined) {
+				head.posAction.stop();
+				mixer.uncacheClip(head.posAction._clip);
 			}
 
-			let endPos = head.position.clone();
-			endPos.x -= 1;
-
 			let newClip = createAnimClip(endPos);
-			newClip.weight = 1 - clipWeight;
 
-			head.posClip = mixer.clipAction(newClip).play();
+			head.posAction = mixer.clipAction(newClip, head).play();
+			head.posAction.setEffectiveWeight(1 - clipWeight);
+			head.posAction.setEffectiveTimeScale(1);
+
 			mixerRunning = true;
 		} else if (event.key === 'w') {
 			// UP
-			if (parent.tween !== undefined && parent.tween.isPlaying()) {
-				return;
-			}
+			// if (parent.tween !== undefined && parent.tween.isPlaying()) {
+			// 	return;
+			// }
 
-			parent.tween = new TWEEN.Tween(parent.position)
-			.to({
-				x: parent.position.x,
-				y: parent.position.y + 1,
-				z: parent.position.z
-			}, tweenDuration)
-			.easing(TWEEN.Easing.Quadratic.Out)
-			.onUpdate(() => {
-				updateAngles(false);
-			})
-			.start();
+			// parent.tween = new TWEEN.Tween(parent.position)
+			// .to({
+			// 	x: parent.position.x,
+			// 	y: parent.position.y + 1,
+			// 	z: parent.position.z
+			// }, tweenDuration)
+			// .easing(TWEEN.Easing.Quadratic.Out)
+			// .onUpdate(() => {
+			// 	updateAngles(false);
+			// })
+			// .start();
 		} else if (event.key === 'd') {
 			// RIGHT
-			if (parent.tween !== undefined && parent.tween.isPlaying()) {
-				return;
-			}
+			// if (parent.tween !== undefined && parent.tween.isPlaying()) {
+			// 	return;
+			// }
 
-			parent.tween = new TWEEN.Tween(parent.position)
-			.to({
-				x: parent.position.x + 1,
-				y: parent.position.y,
-				z: parent.position.z
-			}, tweenDuration)
-			.easing(TWEEN.Easing.Quadratic.Out)
-			.onUpdate(() => {
-				updateAngles(false);
-			})
-			.start();
+			// parent.tween = new TWEEN.Tween(parent.position)
+			// .to({
+			// 	x: parent.position.x + 1,
+			// 	y: parent.position.y,
+			// 	z: parent.position.z
+			// }, tweenDuration)
+			// .easing(TWEEN.Easing.Quadratic.Out)
+			// .onUpdate(() => {
+			// 	updateAngles(false);
+			// })
+			// .start();
 		} else if (event.key === 's') {
 			// DOWN
-			if (parent.tween !== undefined && parent.tween.isPlaying()) {
-				return;
-			}
+			// 	if (parent.tween !== undefined && parent.tween.isPlaying()) {
+			// 		return;
+			// 	}
 
-			parent.tween = new TWEEN.Tween(parent.position)
-			.to({
-				x: parent.position.x,
-				y: parent.position.y - 1,
-				z: parent.position.z
-			}, tweenDuration)
-			.easing(TWEEN.Easing.Quadratic.Out)
-			.onUpdate(() => {
-				updateAngles(false);
-			})
-			.start();
+			// 	parent.tween = new TWEEN.Tween(parent.position)
+			// 	.to({
+			// 		x: parent.position.x,
+			// 		y: parent.position.y - 1,
+			// 		z: parent.position.z
+			// 	}, tweenDuration)
+			// 	.easing(TWEEN.Easing.Quadratic.Out)
+			// 	.onUpdate(() => {
+			// 		updateAngles(false);
+			// 	})
+			// 	.start();
 		}
 		updateAngles();
 	}
