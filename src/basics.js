@@ -181,16 +181,16 @@ function run() {
 		} else if (event.key === 'a') {
 			// LEFT
 			if (head.posClip !== undefined) {
-				head.position.stop();
+				head.posClip.stop();
 			}
 
 			let endPos = head.position.clone();
 			endPos.x -= 1;
 
-			head.posClip = createAnimClip(endPos);
-			head.posClip.weight = 1 - clipWeight;
+			let newClip = createAnimClip(endPos);
+			newClip.weight = 1 - clipWeight;
 
-			mixer.clipAction(head.posClip).play();
+			head.posClip = mixer.clipAction(newClip).play();
 			mixerRunning = true;
 		} else if (event.key === 'w') {
 			// UP
