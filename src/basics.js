@@ -5,6 +5,10 @@
 // Create an empty scene
 let scene = new THREE.Scene();
 
+let stats = new Stats();
+stats.showPanel(0);
+document.body.appendChild(stats.dom);
+
 // Create a basic perspective camera
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.x = -2;
@@ -65,6 +69,7 @@ loader.load(
 		animations = gltf.animations;
 
 		mixer = new THREE.AnimationMixer(head);
+		clip = mixer.clipAction(animations[0]);
 
 		scene.add(gltf.scene);
 
@@ -114,6 +119,25 @@ function run() {
 
 	let up = new THREE.Vector3(0, 1, 0);
 
+	let animCounter = 0;
+	function createAnimClip(target) {
+		let duration = animations[0].duration;
+		let noSamples = animations[0].tracks[0].times.length;
+
+		let values = [];
+		for (let i = 0; i < noSamples; i ++) {
+			values[i * 3] 	  = target.x || 0;
+			values[i * 3 + 1] = target.y || 0;
+			values[i * 3 + 2] = target.z || 0;
+		}
+
+		let positionKF = new THREE.VectorKeyframeTrack('.position', [...Array(noSamples).keys()], values);
+		
+		let dummyClip = new THREE.AnimationClip('Anim' + animCounter, duration , [positionKF]);
+
+		return dummyClip;
+	}
+
 	function onDocumentKeyDown(event) {
 		if (event.key === 'A') {
 			target.position.x -= 1;
@@ -135,11 +159,10 @@ function run() {
 			dest.z += 1;
 		} else if (event.key === 'p' || event.key === 'P') {
 			if (!mixerRunning) {
-				clip = mixer.clipAction(animations[0]);
 				clip.play();
 				mixerRunning = true;
 			} else {
-				clip.stop();
+				if (clip.stop !== undefined) clip.stop();
 				mixerRunning = false;
 			}
 		} else if (event.key === '-' || event.key === '+') {
@@ -157,21 +180,26 @@ function run() {
 			animated = !animated;
 		} else if (event.key === 'a') {
 			// LEFT
-			if (parent.tween !== undefined && parent.tween.isPlaying()) {
-				return;
-			}
+			// if (parent.tween !== undefined && parent.tween.isPlaying()) {
+			// 	return;
+			// }
 
-			parent.tween = new TWEEN.Tween(parent.position)
-				.to({
-					x: parent.position.x - 1,
-					y: parent.position.y,
-					z: parent.position.z
-				}, tweenDuration)
-				.easing(TWEEN.Easing.Quadratic.Out)
-				.onUpdate(() => {
-					updateAngles(false);
-				})
-				.start();
+			// parent.tween = new TWEEN.Tween(parent.position)
+			// 	.to({
+			// 		x: parent.position.x - 1,
+			// 		y: parent.position.y,
+			// 		z: parent.position.z
+			// 	}, tweenDuration)
+			// 	.easing(TWEEN.Easing.Quadratic.Out)
+			// 	.onUpdate(() => {
+			// 		updateAngles(false);
+			// 	})
+			// 	.start();
+			let endPos = head.position.clone();
+			endPos.x -= 1;
+
+			mixer.clipAction(createAnimClip(endPos)).play();
+			mixerRunning = true;
 		} else if (event.key === 'w') {
 			// UP
 			if (parent.tween !== undefined && parent.tween.isPlaying()) {
@@ -272,6 +300,8 @@ function run() {
 	updateAngles();
 
 	function render() {
+		stats.begin();
+
 		// Rotate head
 		animatedRotation.slerp(rotation, interpolationFactor);
 		animatedRotation2.slerp(rotation2, interpolationFactor);
@@ -317,6 +347,8 @@ function run() {
 
 		// Render the scene
 		renderer.render(scene, camera);
+
+		stats.end();
 
 		requestAnimationFrame(render);
 	}
