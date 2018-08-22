@@ -180,25 +180,17 @@ function run() {
 			animated = !animated;
 		} else if (event.key === 'a') {
 			// LEFT
-			// if (parent.tween !== undefined && parent.tween.isPlaying()) {
-			// 	return;
-			// }
+			if (head.posClip !== undefined) {
+				head.position.stop();
+			}
 
-			// parent.tween = new TWEEN.Tween(parent.position)
-			// 	.to({
-			// 		x: parent.position.x - 1,
-			// 		y: parent.position.y,
-			// 		z: parent.position.z
-			// 	}, tweenDuration)
-			// 	.easing(TWEEN.Easing.Quadratic.Out)
-			// 	.onUpdate(() => {
-			// 		updateAngles(false);
-			// 	})
-			// 	.start();
 			let endPos = head.position.clone();
 			endPos.x -= 1;
 
-			mixer.clipAction(createAnimClip(endPos)).play();
+			head.posClip = createAnimClip(endPos);
+			head.posClip.weight = 1 - clipWeight;
+
+			mixer.clipAction(head.posClip).play();
 			mixerRunning = true;
 		} else if (event.key === 'w') {
 			// UP
