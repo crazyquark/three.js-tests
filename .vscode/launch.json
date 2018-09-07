@@ -10,6 +10,13 @@
 			"request": "launch",
 			"reAttach": true,
 			"file": "${workspaceFolder}/basics.html"
+		},
+		{
+			"name": "Launch rotations.html",
+			"type": "firefox",
+			"request": "launch",
+			"reAttach": true,
+			"file": "${workspaceFolder}/rotations.html"
 		}
 	]
 }
