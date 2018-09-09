@@ -137,13 +137,9 @@ function run() {
 	function render() {
 		stats.begin();
 
-		let headPos = new THREE.Vector3();
-		head.getWorldPosition(headPos);
-		infoElement.innerHTML = 'Head: ' + JSON.stringify(headPos);
-		let targetPos = new THREE.Vector3();
-		target.getWorldPosition(targetPos);
-		infoElement.innerHTML += '</br>Target: ' + JSON.stringify(targetPos)
-
+		infoElement.innerHTML = 'Position: ' + JSON.stringify(head.position);
+		infoElement.innerHTML += '</br> Rotation: ' + JSON.stringify(head.rotation);
+		
 		// Render the scene
 		renderer.render(scene, camera);
 
