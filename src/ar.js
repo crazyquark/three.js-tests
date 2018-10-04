@@ -97,7 +97,7 @@
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
 	    type: 'pattern',
 	    // patternUrl: THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
-	    patternUrl : baseURL + 'data/data/patt.kanji',
+	    patternUrl : baseURL + 'data/data/patt.hiro',
 	    // as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 	    changeMatrixMode: 'cameraTransformMatrix'
 	});
