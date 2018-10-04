@@ -17,6 +17,13 @@
 			"request": "launch",
 			"reAttach": true,
 			"file": "${workspaceFolder}/rotations.html"
+		},
+		{
+			"name": "Launch ar.html",
+			"type": "firefox",
+			"request": "launch",
+			"reAttach": true,
+			"file": "${workspaceFolder}/ar.html"
 		}
 	]
 }
