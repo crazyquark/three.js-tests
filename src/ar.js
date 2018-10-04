@@ -31,7 +31,7 @@
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
-	let baseURL = 'https://www.cristiansandu.ro/webgl/node_modules/ar.js/';
+	let baseURL = 'https://www.cristiansandu.ro/webgl/';
 	// let baseURL = 'file:///home/chris/Desktop/Workspace/three.js-tests/node_modules/ar.js/';
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
@@ -70,7 +70,7 @@
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
-	    cameraParametersUrl: baseURL + 'data/data/camera_para.dat',
+	    cameraParametersUrl: baseURL + 'node_modules/ar.js/data/data/camera_para.dat',
 	    detectionMode: 'mono',
 	});
 	// initialize it
@@ -97,7 +97,7 @@
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
 	    type: 'pattern',
 	    // patternUrl: THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
-	    patternUrl : baseURL + 'data/data/patt.hiro',
+	    patternUrl : baseURL + 'node_modules/ar.js/data/data/patt.kanji',
 	    // as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 	    changeMatrixMode: 'cameraTransformMatrix'
 	});
@@ -113,7 +113,7 @@
 	
 	let loader = new THREE.GLTFLoader();
 	loader.load(
-		'models/head.gltf',
+		baseURL + 'models/head.dat',
 		(gltf) => {
 			scene.add(gltf.scene);
 		}
