@@ -31,7 +31,10 @@
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
-	let baseURL = 'https://www.cristiansandu.ro/webgl/';
+	
+	let baseURL = window.location.toString();
+	baseURL = baseURL.substr(0, baseURL.lastIndexOf('/') + 1);
+
 	// let baseURL = 'file:///home/chris/Desktop/Workspace/three.js-tests/node_modules/ar.js/';
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
