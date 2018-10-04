@@ -31,7 +31,8 @@
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
-	let baseURL = 'file:///home/chris/Desktop/Workspace/three.js-tests/node_modules/ar.js/';
+	let baseURL = 'https://www.cristiansandu.ro/webgl/node_modules/ar.js/';
+	// let baseURL = 'file:///home/chris/Desktop/Workspace/three.js-tests/node_modules/ar.js/';
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
 	    // to read from the webcam 
