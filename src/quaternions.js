@@ -355,8 +355,17 @@ function rotateHead(angles) {
     angles.tilt = Math.PI * angles.tilt / 180;
 
     let rotation = new THREE.Quaternion();
-    let panQuat = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0), angles.pan);
-    let tiltQuat = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0), angles.tilt);
+    
+    // let euler = new THREE.Euler(angles.pan, angles.tilt, 0).reorder('ZYX');
+    // let matrix = new THREE.Matrix4().makeRotationFromEuler(euler);
+    // rotation.setFromRotationMatrix(matrix);
+    
+    let panDir = new THREE.Vector3(1,0,0);
+    let panQuat = new THREE.Quaternion().setFromAxisAngle(panDir, angles.pan);
+
+    let tiltDir = new THREE.Vector3(0,1,0);
+    // tiltDir.applyQuaternion(panQuat.inverse());
+    let tiltQuat = new THREE.Quaternion().setFromAxisAngle(tiltDir, angles.tilt);
 
     rotation.multiply(panQuat);
     rotation.multiply(tiltQuat);
