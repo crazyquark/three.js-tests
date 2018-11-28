@@ -19,6 +19,13 @@
 			"file": "${workspaceFolder}/rotations.html"
 		},
 		{
+			"name": "Launch quaternions.html",
+			"type": "firefox",
+			"request": "launch",
+			"reAttach": true,
+			"file": "${workspaceFolder}/quaternions.html"
+		},
+		{
 			"name": "Launch ar.html",
 			"type": "firefox",
 			"request": "launch",

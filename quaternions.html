@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Quaternions</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<style>
+		body {
+			font-family: Monospace;
+			background-color: #000;
+			color: #fff;
+			margin: 0px;
+			overflow: hidden;
+		}
+
+		#title {
+			position: absolute;
+			top: 40px;
+			width: 100%;
+			text-align: center;
+			z-index: 100;
+			display: block;
+			color:aqua;
+		}
+
+		#info {
+			position: absolute;
+			top:60px;
+			left: 5px;
+			width: 100%;
+			text-align: left;
+			z-index: auto;
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="title">Quaternions</div>
+	<div id="info">Info</div>
+	<div id="faceDisplay"></div>
+	<script src="node_modules/three/build/three.js"></script>
+	<script src="node_modules/@tweenjs/tween.js/src/Tween.js"></script>
+	<script src="node_modules/three/examples/js/controls/OrbitControls.js"></script>
+	<script src="node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+	<script src="node_modules/stats.js/build/stats.min.js"></script>
+	<script src="src/quaternions.js"></script>
+</body>
+
+</html>
