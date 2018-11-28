@@ -82,11 +82,11 @@ function run() {
 	let dest = new THREE.Vector3(2, 2, 2);
 
 	// let head = new THREE.Mesh(geometry, materials);
-	let target = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({
-		color: 'purple'
-	}));
-	target.position.copy(dest);
-	target.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
+	// let target = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({
+	// 	color: 'purple'
+	// }));
+	// target.position.copy(dest);
+	// target.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 2));
 
 	// Add coordinate system
 	scene.add(new THREE.AxesHelper(5));
@@ -98,14 +98,15 @@ function run() {
 			head
 		target
 	*/
-	parent.add(head);
+    parent.add(head);
+    head.add(new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(), 5, 0xff00000))
 	leftEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 5));
 	rightEye.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 5));
 
 
 	// Add head to Scene
 	scene.add(parent);
-	scene.add(target);
+	// scene.add(target);
 
 	// Render Loop
 	let frameCounter = 0;
@@ -331,9 +332,9 @@ function run() {
 		let headPos = new THREE.Vector3();
 		head.getWorldPosition(headPos);
 		infoElement.innerHTML = 'Head: ' + JSON.stringify(headPos);
-		let targetPos = new THREE.Vector3();
-		target.getWorldPosition(targetPos);
-		infoElement.innerHTML += '</br>Target: ' + JSON.stringify(targetPos)
+		// let targetPos = new THREE.Vector3();
+		// target.getWorldPosition(targetPos);
+		// infoElement.innerHTML += '</br>Target: ' + JSON.stringify(targetPos)
 
 		// Update tween
 		TWEEN.update();
@@ -354,9 +355,10 @@ function rotateHead(angles) {
     angles.tilt = Math.PI * angles.tilt / 180;
 
     let rotation = new THREE.Quaternion();
-    rotation.setFromAxisAngle(new THREE.Vector3(1,0,0), angles.pan);
+    let panQuat = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0), angles.pan);
     let tiltQuat = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0), angles.tilt);
 
+    rotation.multiply(panQuat);
     rotation.multiply(tiltQuat);
 
     head.quaternion.copy(rotation);
