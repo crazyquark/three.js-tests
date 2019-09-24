@@ -145,7 +145,7 @@ function createTarget(position) {
 }
 
 function updateTarget() {
-    let armPosition = new THREE.Vector3();
+    let armPosition = arm.position;
 
     let dir = target.position.clone().sub(armPosition);
     let length = dir.length();
