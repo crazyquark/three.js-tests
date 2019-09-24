@@ -68,6 +68,7 @@ function init() {
     geometry = new THREE.BoxGeometry(0.3, 0.3, 0.3);
 
     const fingerPos = new THREE.Vector3(7, 2, -1);
+    
     finger = new THREE.Mesh(geometry, material);
     finger.position.copy(fingerPos);
 
@@ -85,7 +86,7 @@ function init() {
 
     armDir = dir.clone();
 
-    origin.add(finger);
+    arm.add(finger);
 
     updateTarget();
 
