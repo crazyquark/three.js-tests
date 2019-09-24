@@ -26,11 +26,13 @@ function init() {
     // Create scene.
     scene = new THREE.Scene();
 
+    scene.add(new THREE.AxesHelper(3));
+
     parent = new THREE.Object3D();
-    parent.rotation.y = Math.PI / 2;
+    // parent.rotation.y = Math.PI / 2;
 
     origin = new THREE.Object3D();
-    origin.rotation.x = Math.PI / 2;
+    // origin.rotation.x = Math.PI / 2;
 
     parent.add(origin);
 
@@ -83,7 +85,7 @@ function init() {
 
     armDir = dir.clone();
 
-    arm.add(finger);
+    origin.add(finger);
 
     updateTarget();
 
@@ -143,7 +145,9 @@ function createTarget(position) {
 }
 
 function updateTarget() {
-    let dir = target.position.clone().sub(arm.position);
+    let armPosition = new THREE.Vector3();
+
+    let dir = target.position.clone().sub(armPosition);
     let length = dir.length();
     dir = dir.normalize();
 
