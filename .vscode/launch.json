@@ -31,6 +31,13 @@
 			"request": "launch",
 			"reAttach": true,
 			"file": "${workspaceFolder}/ar.html"
+		},
+		{
+			"name": "Launch align.html",
+			"type": "firefox",
+			"request": "launch",
+			"reAttach": true,
+			"file": "${workspaceFolder}/align.html"
 		}
 	]
 }

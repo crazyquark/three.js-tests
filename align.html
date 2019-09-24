@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Align</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            font-family: Monospace;
+            background-color: #000;
+            color: #fff;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        #title {
+            position: absolute;
+            top: 40px;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            display: block;
+            color: aqua;
+        }
+
+        #info {
+            position: absolute;
+            top: 60px;
+            left: 5px;
+            width: 100%;
+            text-align: left;
+            z-index: auto;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="title">Align Sandbox</div>
+    <div id="info">Info</div>
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://threejs.org/examples/js/controls/TransformControls.js"></script>
+    <script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
+
+    <script src="src/align.js"></script>
+</body>
